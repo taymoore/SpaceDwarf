@@ -33,7 +33,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     ShipTile::Initialize();
 
     // Build starter ship
-    Ship playerShip = Ship(&window);
+    Ship playerShip = Ship();
 
     // Transformation
     //sf::Transform mapTransform = sf::Transform();

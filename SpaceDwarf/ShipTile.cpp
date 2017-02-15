@@ -25,3 +25,31 @@ Wall::Wall(int xPos, int yPos) {
     sprite.setTextureRect(spriteRect);
     sprite.setPosition((float)((xPos + yPos) * 195), (float)((xPos - yPos) * 112 - 111));
 }
+
+Window::Window(int xPos, int yPos, ShipTile::Orientation orientation) {
+    // Load texture
+    sprite.setTexture(shipTileset);
+    SetOrientation(orientation);
+    sprite.setPosition((float)((xPos + yPos) * 195), (float)((xPos - yPos) * 112 - 111));
+}
+
+void Window::SetOrientation(ShipTile::Orientation orientation) {
+    int spriteIndexX = 0;
+    int spriteIndexY = 1;
+    switch(orientation) {
+        case ShipTile::Orientation::NE:
+            spriteIndexX = 0;
+            break;
+        case ShipTile::Orientation::SE:
+            spriteIndexX = 3;
+            break;
+        case ShipTile::Orientation::SW:
+            spriteIndexX = 2;
+            break;
+        case ShipTile::Orientation::NW:
+            spriteIndexX = 1;
+            break;
+    }
+    sf::IntRect spriteRect(spriteIndexX * 388, spriteIndexY * 335, 388, 335);
+    sprite.setTextureRect(spriteRect);
+}

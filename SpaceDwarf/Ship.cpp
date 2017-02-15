@@ -5,102 +5,89 @@
 // Y is up-right
 // Z is upwards
 
-// Coordinates are z y x
-Ship::TileType starterShip[defaultShipSizeZ][defaultShipSizeY][defaultShipSizeX] = {/*z = 0*/                                      /*x*/
-                              {      {Ship::TileType::SPACE, Ship::TileType::WALL, Ship::TileType::WALL,  Ship::TileType::WALL, Ship::TileType::SPACE} ,
-                                     {Ship::TileType::SPACE, Ship::TileType::WALL, Ship::TileType::FLOOR, Ship::TileType::WALL, Ship::TileType::SPACE},
-                               /*y*/ {Ship::TileType::SPACE, Ship::TileType::WALL, Ship::TileType::FLOOR, Ship::TileType::WALL, Ship::TileType::SPACE},
-                                     {Ship::TileType::SPACE, Ship::TileType::WALL, Ship::TileType::WALL,  Ship::TileType::WALL, Ship::TileType::SPACE}
-                                     }
-                                     };
-
-Ship::Ship(sf::RenderWindow* window, SHIP shipType) {
+Ship::Ship(SHIP shipType) {
     memset(tileList, 0, sizeof(tileList[0][0][0]) * defaultShipSizeX * defaultShipSizeY * defaultShipSizeZ);
-    LoadFromFile("Assets/Ships/starterShip.csv", window);
-    //TileType* defaultShip;
-    //switch(shipType) {
-    //    case STARTER_SHIP:
-    //        defaultShip = &starterShip[0][0][0];
-    //        shipSize.x = defaultShipSizeX;
-    //        shipSize.y = defaultShipSizeY;
-    //        shipSize.z = defaultShipSizeZ;
-    //        break;
-    //    default:
-    //        defaultShip = &starterShip[0][0][0];
-    //        shipSize.x = defaultShipSizeX;
-    //        shipSize.y = defaultShipSizeY;
-    //        shipSize.z = defaultShipSizeZ;
-    //        break;
-    //}
-
-    //for(int z = 0; z < defaultShipSizeZ; z++) {
-    //    for(int y = 0; y < defaultShipSizeY; y++) {
-    //        for(int x = 0; x < defaultShipSizeX; x++) {
-    //            tileList[x][y][z] = CreateShipTile(*(defaultShip + defaultShipSizeY * defaultShipSizeX * z + defaultShipSizeX * y + x), x, y, z);
-    //        }
-    //    }
-    //}
+    switch(shipType) {
+        case STARTER_SHIP:
+            LoadFromFile("Assets/Ships/starterShip.csv");
+            break;
+        default:
+            throw std::invalid_argument("Invalid Ship Type");
+    }
 } 
 
-//Ship::TileType*** Ship::LoadFromFile(char* file) {
-void Ship::LoadFromFile(std::string file, sf::RenderWindow* window) {
-    // Allocate memory
-    //Ship::TileType*** ship;
-    //ship = new Ship::TileType**[defaultShipSizeX];
-    //for(int x = 0; x < defaultShipSizeX; x++) {
-    //    ship[x] = new Ship::TileType*[defaultShipSizeY];
-    //    for(int y = 0; y < defaultShipSizeY; y++) {
-    //        ship[x][y] = new Ship::TileType[defaultShipSizeZ];
-    //    }
-    //}
+void Ship::LoadFromFile(std::string file) {
     std::ifstream shipFile(file);
     if(shipFile.is_open()) {
-        char tileType[5];
-        char* newLinePtr;
+        char shipLine[50];
+        char* lineTracer;
         int x = 0;
         int y = 0;
         int z = 0;
         shipSize.x = defaultShipSizeX;
         shipSize.y = defaultShipSizeY;
         shipSize.z = defaultShipSizeZ;
+        Ship::TileType tileType;
+        ShipTile::Orientation tileOrientation;
+        // Determine lines in file
+        while(shipFile.good() && shipFile.getline(shipLine, 50)) {
+            y++;
+        }
+        // Go to beginning of file
+        shipFile.clear();
+        shipFile.seekg(0, std::ios::beg);
+        // Read file from top down
         while(shipFile.good()) {
-            shipFile.getline(tileType, 5, ',');
-            // If last entry
-            if((newLinePtr = strchr(tileType, '\n')) != nullptr) {
-                tileList[x][y][z] = CreateShipTile((Ship::TileType)atoi(tileType), x, y, z);
-                window->clear();
-                tileList[x][y][z]->Draw(window);
-                window->display();
-                x = 0;
-                y++;
-                tileList[x][y][z] = CreateShipTile((Ship::TileType)atoi(newLinePtr + 1), x, y, z);
-                window->clear();
-                tileList[x][y][z]->Draw(window);
-                window->display();
-                x++;
-            } else {
-                tileList[x][y][z] = CreateShipTile((Ship::TileType)atoi(tileType), x, y, z);
-                window->clear();
-                tileList[x][y][z]->Draw(window);
-                window->display();
-                x++;
+            shipFile.getline(shipLine, 50);
+            // If end of file
+            if(shipLine[0] == '\0') {
+                // Stop reading file
+                break;
             }
-            //if(x >= defaultShipSizeX) {
-            //    x = 0;
-            //    y++;
-            //}
-            //if(y >= defaultShipSizeY) {
-            //    y = 0;
-            //    z++;
-            //}
+            lineTracer = shipLine;
+            lineTracer--;
+            do {
+                switch(atoi(++lineTracer)) {
+                    case -1:
+                        tileType = Ship::TileType::SPACE;
+                        break;
+                    case 0:
+                        tileType = Ship::TileType::FLOOR;
+                        break;
+                    case 1:
+                        tileType = Ship::TileType::WALL;
+                        break;
+                    case 4:
+                        tileOrientation = ShipTile::Orientation::NE;
+                        tileType = Ship::TileType::WINDOW;
+                        break;
+                    case 5:
+                        tileOrientation = ShipTile::Orientation::NW;
+                        tileType = Ship::TileType::WINDOW;
+                        break;
+                    case 6:
+                        tileOrientation = ShipTile::Orientation::SE;
+                        tileType = Ship::TileType::WINDOW;
+                        break;
+                    case 7:
+                        tileOrientation = ShipTile::Orientation::SW;
+                        tileType = Ship::TileType::WINDOW;
+                        break;
+                    default:
+                        throw std::invalid_argument("Read invalid tile type from ship file");
+                }
+                tileList[x][y][z] = CreateShipTile(tileType, x, y, z, tileOrientation);
+                x++;
+            } while(lineTracer = strpbrk(lineTracer, ",\n\r"));
+            x = 0;
+            y--;
         }
     } else {
         throw std::invalid_argument("Cannot locate " + file);
     }
-    //tileList[0][0][0] = new Floor(1, 1);
 }
 
-Tile* Ship::CreateShipTile(TileType tileType,int x, int y, int z) {
+Tile* Ship::CreateShipTile(TileType tileType,int x, int y, int z, ShipTile::Orientation orientation) {
     switch(tileType) {
         case Ship::TileType::SPACE:
             return nullptr;
@@ -108,12 +95,13 @@ Tile* Ship::CreateShipTile(TileType tileType,int x, int y, int z) {
             return new Floor(x, y);
         case Ship::TileType::WALL:
             return new Wall(x, y);
+        case Ship::TileType::WINDOW:
+            return new Window(x, y, orientation);
     }
 }
 
 void Ship::Draw(sf::RenderWindow* window) {
     for(int z = shipSize.z - 1; z >= 0; z--) {
-        //for(int x = shipSize.x - 1; x >= 0; x--) {
         for(int x = 0; x < shipSize.x; x++) {
             for(int y = shipSize.y - 1; y >= 0; y--) {
                 if(tileList[x][y][z] != nullptr) {
