@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="isometric" renderorder="right-down" width="5" height="6" tilewidth="388" tileheight="225" nextobjectid="1">
+ <tileset firstgid="1" name="Ship" tilewidth="388" tileheight="335" tilecount="4" columns="4">
+  <image source="../Images/Ship.png" width="1552" height="642"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="5" height="6">
+  <data encoding="base64">
+   AgAAAAIAAAACAAAAAgAAAAIAAAACAAAAAQAAAAEAAAABAAAAAgAAAAIAAAABAAAAAQAAAAEAAAACAAAAAgAAAAEAAAABAAAAAQAAAAIAAAACAAAAAQAAAAEAAAABAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAA
+  </data>
+ </layer>
+</map>
