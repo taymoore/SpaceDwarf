@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="isometric" renderorder="right-down" width="5" height="6" tilewidth="388" tileheight="225" nextobjectid="1">
- <tileset firstgid="1" name="Ship" tilewidth="388" tileheight="335" tilecount="8" columns="4">
-  <image source="../Images/Ship.png" width="1552" height="670"/>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="7" height="9" tilewidth="100" tileheight="100" backgroundcolor="#000000" nextobjectid="1">
+ <tileset firstgid="1" name="Ship" tilewidth="100" tileheight="100" tilecount="50" columns="5">
+  <image source="../Images/Ship.png" width="500" height="1000"/>
  </tileset>
- <layer name="Tile Layer 1" width="5" height="6">
+ <tileset firstgid="51" name="Objects" tilewidth="100" tileheight="100" tilecount="50" columns="5">
+  <image source="../Images/Objects.png" width="500" height="1000"/>
+ </tileset>
+ <layer name="Ship" width="7" height="9">
   <data encoding="base64">
-   AgAAAAUAAAACAAAABQAAAAIAAAACAAAAAQAAAAEAAAABAAAAAgAAAAIAAAABAAAAAQAAAAEAAAACAAAAAgAAAAEAAAABAAAAAQAAAAIAAAACAAAAAQAAAAEAAAABAAAAAgAAAAIAAAACAAAAAgAAAAIAAAACAAAA
+   AQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAANAAAACAAAAAgAAAAIAAAACQAAAAEAAAABAAAADQAAAA0AAAANAAAADQAAAA4AAAABAAAAAQAAAA0AAAANAAAADQAAAA0AAAAOAAAAAQAAAAEAAAAMAAAADQAAAA0AAAANAAAADgAAAAEAAAABAAAAAQAAAAEAAAABAAAAAQAAAAEAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  </data>
+ </layer>
+ <layer name="Object" width="7" height="9">
+  <data encoding="base64">
+   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADMAAAA0AAAANQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOQAAAAAAAAAAAAAAAAAAAAAAAAA6AAAAOwAAAAAAAAA6AAAAOwAAAAAAAAAAAAAAPwAAAEAAAAAAAAAAPwAAAEAAAAAAAAAAAAAAAEQAAABFAAAAAAAAAEQAAABFAAAAAAAAAAAAAABJAAAASgAAAAAAAABJAAAASgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
   </data>
  </layer>
 </map>

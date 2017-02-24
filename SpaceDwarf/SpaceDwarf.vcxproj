@@ -88,13 +88,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Taylor\Dropbox\Files\projects\SpaceDwarf\SpaceDwarf\SFML-2.4.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\micro\Dropbox\Files\projects\SpaceDwarf\SpaceDwarf\SFML-2.4.1\include;C:\Users\Taylor\Dropbox\Files\projects\SpaceDwarf\SpaceDwarf\SFML-2.4.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\Taylor\Dropbox\Files\projects\SpaceDwarf\SpaceDwarf\SFML-2.4.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\micro\Dropbox\Files\projects\SpaceDwarf\SpaceDwarf\SFML-2.4.1\lib;C:\Users\micro\Dropbox\Files\projects\SpaceDwarf\SpaceDwarf\lib\x32\Debug;C:\Users\Taylor\Dropbox\Files\projects\SpaceDwarf\SpaceDwarf\lib\x32\Debug;C:\Users\Taylor\Dropbox\Files\projects\SpaceDwarf\SpaceDwarf\SFML-2.4.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;Box2D.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -151,17 +151,28 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Arena.h" />
+    <ClInclude Include="ArenaFaction.h" />
+    <ClInclude Include="ObjectTile.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Ship.h" />
+    <ClInclude Include="ShipObject.h" />
+    <ClInclude Include="ShipPilot.h" />
     <ClInclude Include="ShipTile.h" />
     <ClInclude Include="SpaceDwarf.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Structure.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Tile.h" />
+    <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Arena.cpp" />
+    <ClCompile Include="ArenaFaction.cpp" />
+    <ClCompile Include="ObjectTile.cpp" />
     <ClCompile Include="Ship.cpp" />
+    <ClCompile Include="ShipObject.cpp" />
+    <ClCompile Include="ShipPilot.cpp" />
     <ClCompile Include="ShipTile.cpp" />
     <ClCompile Include="SpaceDwarf.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -172,6 +183,7 @@
     </ClCompile>
     <ClCompile Include="Structure.cpp" />
     <ClCompile Include="Tile.cpp" />
+    <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SpaceDwarf.rc" />

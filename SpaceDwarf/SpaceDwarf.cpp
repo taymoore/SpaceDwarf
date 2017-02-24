@@ -1,9 +1,21 @@
 #include "stdafx.h"
+
 #include "Tile.h"
 #include "ShipTile.h"
+#include "ObjectTile.h"
+#include "Arena.h"
+
 #include "Ship.h"
+//#include "ShipObject.h"
 
 #include <SFML/Graphics.hpp>
+#include "Box2D/Box2D.h"
+
+int currentFps = 0;
+int lastFps = 0;
+std::chrono::nanoseconds fpsCount_ns(0);
+
+sf::Vector2f screenSize;
 
 void zoomViewAt(sf::Vector2i pixel, sf::RenderWindow& window, float zoom) {
     const sf::Vector2f beforeCoord{ window.mapPixelToCoords(pixel) };
@@ -19,21 +31,24 @@ void zoomViewAt(sf::Vector2i pixel, sf::RenderWindow& window, float zoom) {
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPWSTR    lpCmdLine, _In_ int       nCmdShow) {
     // Create window
 	sf::VideoMode currentVideoMode = sf::VideoMode::getDesktopMode();
-    sf::RenderWindow window(currentVideoMode, "SFML works!", sf::Style::Fullscreen);
+    sf::RenderWindow window(currentVideoMode, "Space Dwarf" , sf::Style::Fullscreen);
 
     // Set initial zoom 
-    const float initialZoom = 4;
+    const float initialZoom = 3;
     sf::View view(window.getView());
     view.zoom(initialZoom);
     window.setView(view);
 
-    // Load assets
-    //Floor::Initialize();
-    //Wall::Initialize();
-    ShipTile::Initialize();
+    // Get window size
+    screenSize = view.getSize();
+    //screenPosition = window.getPosition();
 
-    // Build starter ship
-    Ship playerShip = Ship();
+    // Load assets
+    ShipTile::Initialize();
+    //ObjectTile::Initialize();
+
+    // Load arena
+    Arena arena(&window);
 
     // Transformation
     //sf::Transform mapTransform = sf::Transform();
@@ -42,6 +57,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     bool isPanning = false;
     sf::Vector2i oldMousePoint;
     static float viewZoom = initialZoom;
+
+    using clock = std::chrono::high_resolution_clock;
+    std::chrono::nanoseconds lag(0);
+    auto timeStart = clock::now();
 
 	while (window.isOpen()) {
 		sf::Event event;
@@ -89,13 +108,35 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
             }
 		}
 
+        // Update time
+        auto deltaTime = clock::now() - timeStart;
+        timeStart = clock::now();
+        lag += std::chrono::duration_cast<std::chrono::nanoseconds>(deltaTime);
+
+        // Update physics
+        constexpr std::chrono::nanoseconds timeStep_ns(1000000000 / 60);
+        while(lag >= timeStep_ns) {
+            lag -= timeStep_ns;
+            currentFps++;
+
+            arena.Update();
+        }
+
+        // FPS counter
+        constexpr std::chrono::nanoseconds oneSecond_ns(1000000000);
+        fpsCount_ns += deltaTime;
+        if(fpsCount_ns >= oneSecond_ns) {
+            lastFps = currentFps;
+            currentFps = 0;
+            fpsCount_ns -= oneSecond_ns;
+
+            std::wostringstream os_;
+            os_ << lastFps;
+            OutputDebugString(os_.str().c_str());
+        }
+
         // Render
-		window.clear();
-        //for(int i = 0; i < tileCount; i++) {
-        //    tileList[i]->Draw(&window);
-        //}
-        playerShip.Draw(&window);
-		window.display();
+        arena.Draw();
 	}
 
 

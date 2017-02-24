@@ -1,28 +1,22 @@
 #include "stdafx.h"
 #include "Tile.h"
+#include "ObjectTile.h"
 
-Tile::Tile() {
+Tile::Tile(Ship* ship) {
+    this->ship = ship;
 }
 
 Tile::~Tile() {
 }
 
 void Tile::Draw(sf::RenderWindow* window) {
-    window->draw(sprite);
+    sprite.setPosition(ship->spritePosition_sf + spriteOffset_pixel);
+    sf::Transform rotTransform;
+    rotTransform.rotate(ship->rotation, ship->spritePosition_sf);
+    //rotTransform.translate(ship->spritePosition_sf + spriteOffset_pixel);
+    window->draw(sprite, rotTransform);
 }
 
-void Tile::Transform() {
-    //sprite.scale(0.3f, 0.3f);
-}
-
-void Tile::Translate(float x, float y) {
-    sprite.move(x, y);
-}
-
-void Tile::Translate(sf::Vector2i pos) {
-    sprite.move((sf::Vector2f)pos);
-}
-
-void Tile::Scale(int zoomDirection) {
-    sprite.scale(zoomDirection * 0.2f, zoomDirection * 0.2f);
-}
+//void Tile::addObjectTile(ObjectTile* objectTile) {
+//    //objectTileList.push_back(objectTile);
+//}
